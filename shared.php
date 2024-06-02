@@ -3,7 +3,7 @@ $db_server_host = "localhost";
 $db_username = "root";
 $db_password = "";
 
-$name_of_db = "t_api";
+$name_of_db = "reactDB";
 $name_of_table_for_contact_us = "contact_me_request";
 
 $NAME_OF_TABLE__USER_SESSION = "normal_user_session";
@@ -37,26 +37,30 @@ function create__contact_me__table($db_connection)
 	CREATE TABLE IF NOT EXISTS {$GLOBALS['name_of_table_for_contact_us']}
 		(
 		id INT PRIMARY KEY AUTO_INCREMENT,
-		first_name VARCHAR(200),
-		last_name VARCHAR(200),
-		email VARCHAR(200)
+		name VARCHAR(200),
+		email VARCHAR(200),
+		subject VARCHAR(200),
+		message VARCHAR(200)
 		)
 	";	
 	$db_connection->query($DB_CMD__DEFINE_ITEM_TABLE);
 	}
 
 
-function insert__contact_me__item($db_connection, $first_name, $last_name, $emial)
+function insert__contact_me__item($db_connection, $name, $email, $subject, $message)
 	{
 	$db_connection->query
 		(
 		"
-		INSERT INTO {$GLOBALS['name_of_table_for_contact_us']}
-			(first_name , last_name , email) VALUES ('{$first_name}', '{$last_name}', '{$emial}')
+		INSERT INTO 
+			{$GLOBALS['name_of_table_for_contact_us']}
+			(name , email , subject, message) 
+			VALUES 
+			('{$name}', '{$email}', '{$subject}', '{$message}');
 		"
 		);
 	}
-	
+
 	
 //=============================================
 function create__normal_user_session__table($db_connection)

@@ -9,10 +9,13 @@ $db_connection = connect_and_return_db($db_server_host, $db_username, $db_passwo
 create_db($db_connection);
 use_db($db_connection);
 create__contact_me__table($db_connection);
-$fname = $given_json->first_name;
-$lname = $given_json->last_name;
+
+$name = $given_json->name;
 $email = $given_json->email;
-insert__contact_me__item($db_connection, $fname, $lname, $email);
+$subject = $given_json->subject;
+$message = $given_json->message;
+
+insert__contact_me__item($db_connection, $name, $email, $subject, $message);
 echo 200;
 
 ?>
