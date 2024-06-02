@@ -1,6 +1,6 @@
 <?php
 
-include "database.php";
+include "./aux_database.php";
 $object=new Dbconnect;
 $conn=$object->connect();
 header('Content-Type: application/json');
