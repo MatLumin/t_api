@@ -1,7 +1,7 @@
 <?php 
 include "./shared.php"; 
 
-$given_json  = json_decode(file_get_contents('php://input'));
+
 
 $db_connection = connect_and_return_db($db_server_host, $db_username, $db_password);
 create_db($db_connection);

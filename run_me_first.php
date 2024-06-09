@@ -11,4 +11,5 @@ use_db($db_connection);
 create__normal_user_session__table($db_connection);
 create__user_account($db_connection);
 create__contact_me__table($db_connection);
+create__price_card_data($db_connection);
 ?>

@@ -6,8 +6,9 @@ $db_password = "";
 $name_of_db = "reactDB";
 $name_of_table_for_contact_us = "contact_me_request";
 
-$NAME_OF_TABLE__USER_SESSION = "normal_user_session";
-$NAME_OF_TABLE__USER_ACCOUNT = "normal_user_account";
+$NAME_OF_TABLE__USER_SESSION = "normal_user_sesion"; //its in albanian
+$NAME_OF_TABLE__USER_ACCOUNT = "perdorues_sesioni";
+$NAME_OF_TABLE__PRICECARD_DATA = "te_dhenat_e_kartes_cmimit";
 
 
 function connect_and_return_db($db_server_host, $db_username, $db_password)
@@ -60,7 +61,43 @@ function insert__contact_me__item($db_connection, $name, $email, $subject, $mess
 		"
 		);
 	}
-
+//=============================================
+function create__price_card_data($db_connection)
+	{
+	$db_connection->query
+		(
+		"
+		CREATE TABLE IF NOT EXISTS {$GLOBALS['NAME_OF_TABLE__PRICECARD_DATA']}
+			(
+			id INT PRIMARY KEY AUTO_INCREMENT,
+			title VARCHAR(64),
+			price VARCHAR(64),
+			days_to_do VARCHAR(64),
+			text_1 VARCHAR(64),
+			text_2 VARCHAR(64)
+			);
+		"
+		);
+	}
+	
+	
+function get_all_price_cards_data($db_connection)
+	{
+	$result = $db_connection->query
+		(
+		"
+		SELECT * FROM {$GLOBALS['NAME_OF_TABLE__PRICECARD_DATA']};
+		"
+		);
+	
+	$output = array();
+	while ($row = $result->fetch_assoc())
+		{
+		array_push($output, $row);
+		}
+	return $output;		
+	}
+	
 	
 //=============================================
 function create__normal_user_session__table($db_connection)
