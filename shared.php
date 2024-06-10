@@ -6,9 +6,13 @@ $db_password = "";
 $name_of_db = "reactDB";
 $name_of_table_for_contact_us = "contact_me_request";
 
-$NAME_OF_TABLE__USER_SESSION = "normal_user_sesion"; //its in albanian
-$NAME_OF_TABLE__USER_ACCOUNT = "perdorues_sesioni";
+$NAME_OF_TABLE__USER_SESSION = "perdorues_sesioni"; 
+$NAME_OF_TABLE__USER_ACCOUNT = "llogari_normale_e_perdoruesit";
 $NAME_OF_TABLE__PRICECARD_DATA = "te_dhenat_e_kartes_cmimit";
+$NAME_OF_TABLE__LOGIN_ATTEMPT = "hyrje_perpjekje";
+$NAME_OF_TABLE__IP_BLOCKAGE = "ip_bllokimi"; //UNUSED
+
+
 
 
 function connect_and_return_db($db_server_host, $db_username, $db_password)
@@ -254,4 +258,69 @@ function generate_rand_64_char_string()
 		}
 	return $output;
 	}
+//=================================
+function create_table__login_attenpt($db_connection)
+	{
+	$db_connection->query
+		(
+		"
+		CREATE TABLE IF NOT EXISTS {$GLOBALS['NAME_OF_TABLE__LOGIN_ATTEMPT']}
+			(
+			id int PRIMARY KEY AUTO_INCREMENT,
+			unix BIGINT,
+			ip VARCHAR(20),
+			was_ok BOOL
+			);
+		"
+		);
+	}
+	
+	
+function insert__login_attenpt($db_connection, $unix, $ip, $was_ok)
+	{
+	$db_connection->query
+		(
+		"
+		INSERT INTO {$GLOBALS['NAME_OF_TABLE__LOGIN_ATTEMPT']}
+			(
+			unix, ip, was_ok
+			)
+			VALUES 
+			(
+			{$unix},
+			'{$ip}',
+			{$was_ok}
+			)
+		"
+		);
+	}
+	
+	
+function remove_all_login_attempts_aging_more_than($db_connection)
+	{
+	$current_unix = time();
+	$db_connection->query
+		(
+		"
+		DELETE FROM {$GLOBALS['NAME_OF_TABLE__LOGIN_ATTEMPT']} 
+		WHERE {$current_unix}-unix >= 60;
+		"
+		);
+	}
+	
+	
+function count_failed_login_attempts_for_ip($db_connection, $ip)
+	{
+	$result = $db_connection->query
+		(
+		"
+		SELECT COUNT(id) as total from {$GLOBALS['NAME_OF_TABLE__LOGIN_ATTEMPT']}
+		WHERE ip='{$ip}' AND was_ok=FALSE;
+		"
+		);
+		
+	return $result->fetch_assoc()["total"];
+	}
+	
+//=================================	
 ?>
